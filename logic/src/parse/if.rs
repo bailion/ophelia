@@ -128,7 +128,6 @@ impl Display for FmtIfBranch<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if self.is_elif {
             f.write_str("{% elif ")?;
-
         } else {
             f.write_str("{% if ")?;
         }

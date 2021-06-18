@@ -43,7 +43,6 @@ impl<'i> Parse<'i> for Ast<'i> {
                         skip(rest, 2, |input| Ok((Some(Self::Comment(comment)), input)))
                     }),
                     _ => {
-
                         let (raw_string, rest) = up_to_optional(input, &["{%", "{{", "{#"])?;
 
                         let raw_string = match raw_string {

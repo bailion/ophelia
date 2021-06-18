@@ -2,7 +2,10 @@ use std::fmt::Display;
 
 use crate::parse::{ignore_whitespace, peek_multiple_bool, r#macro::Macro};
 
-use super::{filter::Filter, r#else::Else, r#for::ForStmt, r#if::If, set::Set, Parse, ParseError};
+use super::{
+    filter::Filter, include::Include, r#else::Else, r#for::ForStmt, r#if::If, set::Set, Parse,
+    ParseError,
+};
 
 #[derive(Debug, Clone, PartialEq)]
 
@@ -12,6 +15,7 @@ pub enum Stmt<'i> {
     MacroStmt(Macro<'i>),
     FilterStmt(Filter<'i>),
     SetStmt(Set<'i>),
+    IncludeStmt(Include<'i>),
 }
 
 impl<'i> Parse<'i> for Stmt<'i> {
@@ -37,6 +41,10 @@ impl<'i> Parse<'i> for Stmt<'i> {
                 let (set, leftover) = Set::parse(input)?;
 
                 return Ok((Self::SetStmt(set), leftover));
+            } else if peek_multiple_bool(input, &["{%", "include"]) {
+                let (include, leftover) = Include::parse(input)?;
+
+                return Ok((Self::IncludeStmt(include), leftover));
             } else {
                 return Err(ParseError::UnexpectedToken(input.get(0..).unwrap()));
             }
@@ -58,6 +66,7 @@ impl Display for Stmt<'_> {
             Stmt::MacroStmt(m) => m.fmt(f),
             Stmt::FilterStmt(filter) => filter.fmt(f),
             Stmt::SetStmt(set) => set.fmt(f),
+            Stmt::IncludeStmt(i) => i.fmt(f),
         }
     }
 }

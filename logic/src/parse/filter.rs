@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use super::{ident::Ident, parse_token, ast::Ast, Parse};
+use super::{ast::Ast, ident::Ident, parse_token, Parse};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Filter<'i> {

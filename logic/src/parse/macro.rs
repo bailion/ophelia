@@ -27,7 +27,7 @@ impl<'i> Parse<'i> for Macro<'i> {
         let (_, input) = parse_token(input, "-%}")?;
 
         let (ast, input) = Ast::parse(input)?;
-        let ast = box(ast);
+        let ast = box (ast);
 
         let (_, input) = parse_token(input, "{%-")?;
 
