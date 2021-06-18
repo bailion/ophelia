@@ -1,2 +1,2 @@
 [workspace]
-members = ["logic", "bindings"]
+members = ["logic", "bindings", "fuzz/parsing"]
