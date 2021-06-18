@@ -6,7 +6,7 @@ use super::{expr::Expr, ignore_whitespace, stmt::Stmt, Parse};
 
 #[derive(Debug, Clone, PartialEq)]
 
-pub enum Ast<'i> {
+pub enum Block<'i> {
     /// Raw text, to be output as-is
     RawText(&'i str),
     /// An expression
@@ -17,7 +17,7 @@ pub enum Ast<'i> {
     Comment(&'i str),
 }
 
-impl<'i> Parse<'i> for Ast<'i> {
+impl<'i> Parse<'i> for Block<'i> {
     fn parse_optional(input: &'i str) -> super::ParseResult<Option<Self>> {
         ignore_whitespace(input, |input| {
             if let Some(indicator) = input.get(0..2) {
@@ -76,13 +76,13 @@ impl<'i> Parse<'i> for Ast<'i> {
     }
 }
 
-impl<'i> Display for Ast<'i> {
+impl<'i> Display for Block<'i> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Ast::RawText(raw) => raw.fmt(f),
-            Ast::Expr(e) => e.fmt(f),
-            Ast::Stmt(s) => s.fmt(f),
-            Ast::Comment(c) => {
+            Block::RawText(raw) => raw.fmt(f),
+            Block::Expr(e) => e.fmt(f),
+            Block::Stmt(s) => s.fmt(f),
+            Block::Comment(c) => {
                 f.write_str("{#")?;
                 c.fmt(f)?;
                 f.write_str("#}")

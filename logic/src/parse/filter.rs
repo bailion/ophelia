@@ -1,11 +1,11 @@
 use std::fmt::Display;
 
-use super::{ast::Ast, ident::Ident, parse_token, Parse};
+use super::{block::Block, ident::Ident, parse_token, Parse};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Filter<'i> {
     name: Ident<'i>,
-    block: Box<Ast<'i>>,
+    block: Box<Block<'i>>,
 }
 
 impl<'i> Parse<'i> for Filter<'i> {
@@ -17,7 +17,7 @@ impl<'i> Parse<'i> for Filter<'i> {
 
         let (_, input) = parse_token(input, "%}")?;
 
-        let (block, input) = Ast::parse(input)?;
+        let (block, input) = Block::parse(input)?;
         let block = box (block);
 
         let (_, input) = parse_token(input, "{%")?;

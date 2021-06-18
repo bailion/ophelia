@@ -1,11 +1,11 @@
 use std::{fmt::Display, path::PathBuf};
 
-use super::{ast::Ast, Parse, ParseResult};
+use super::{block::Block, Parse, ParseResult};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Template<'i> {
     path: Option<PathBuf>,
-    expressions: Vec<Ast<'i>>,
+    expressions: Vec<Block<'i>>,
 }
 
 impl<'i> Parse<'i> for Template<'i> {
@@ -13,7 +13,7 @@ impl<'i> Parse<'i> for Template<'i> {
         let (expressions, left_over) = {
             let mut output = vec![];
             while !input.is_empty() {
-                let (out, left_over) = Ast::parse(input)?;
+                let (out, left_over) = Block::parse(input)?;
                 input = left_over;
                 output.push(out);
             }
@@ -32,7 +32,7 @@ impl<'i> Parse<'i> for Template<'i> {
         let (expressions, left_over) = {
             let mut output = vec![];
             while !input.is_empty() {
-                let (out, left_over) = Ast::parse_optional(input)?;
+                let (out, left_over) = Block::parse_optional(input)?;
 
                 let out = match out {
                     Some(out) => out,

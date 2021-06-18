@@ -2,14 +2,14 @@ use std::fmt::Display;
 
 use crate::parse::{ignore_whitespace, up_to};
 
-use super::{ast::Ast, expr::Expr, ident::Ident, parse_token, Parse};
+use super::{block::Block, expr::Expr, ident::Ident, parse_token, Parse};
 
 #[derive(Debug, Clone, PartialEq)]
 
 pub struct ForStmt<'i> {
     idents_of_iter: Vec<Ident<'i>>,
     in_expr: Expr<'i>,
-    block: Ast<'i>,
+    block: Block<'i>,
 }
 
 impl<'i> Parse<'i> for ForStmt<'i> {
@@ -56,7 +56,7 @@ impl<'i> Parse<'i> for ForStmt<'i> {
 
         let (_, input) = parse_token(input, "%}")?;
 
-        let (block, input) = Ast::parse(input)?;
+        let (block, input) = Block::parse(input)?;
 
         // todo: make parsing more forgiving
         let (_, input) = parse_token(input, "{% endfor %}")?;

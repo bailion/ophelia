@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use crate::parse::{ignore_whitespace, Parse, ParseError};
 
-use super::{ast::Ast, expr::Expr, r#else::Else, ParseResult};
+use super::{block::Block, expr::Expr, r#else::Else, ParseResult};
 
 #[derive(Debug, PartialEq, Clone)]
 
@@ -78,7 +78,7 @@ impl Display for If<'_> {
 
 pub struct IfBranch<'i> {
     condition: Expr<'i>,
-    block: Ast<'i>,
+    block: Block<'i>,
 }
 
 impl<'i> IfBranch<'i> {
@@ -112,7 +112,7 @@ impl<'i> IfBranch<'i> {
 
             let (condition, advanced) = Expr::parse(&input.get(0..=1).unwrap())?;
 
-            let (block, advanced) = Ast::parse(advanced)?;
+            let (block, advanced) = Block::parse(advanced)?;
 
             Ok((Self { condition, block }, advanced))
         })

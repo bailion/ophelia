@@ -2,13 +2,13 @@ use std::fmt::{Display, Formatter, Write};
 
 use crate::parse::{bracketed::parse_bracketed, ident::Ident, parse_token, peek_token_bool};
 
-use super::{ast::Ast, expr::Expr, Parse};
+use super::{block::Block, expr::Expr, Parse};
 
 pub struct Call<'i> {
     fn_name: Ident<'i>,
     fn_args: Vec<Expr<'i>>,
     args: Vec<Expr<'i>>,
-    block: Ast<'i>,
+    block: Block<'i>,
 }
 
 impl<'i> Parse<'i> for Call<'i> {
@@ -30,7 +30,7 @@ impl<'i> Parse<'i> for Call<'i> {
 
         let (_, input) = parse_token(input, "%}")?;
 
-        let (block, input) = Ast::parse(input)?;
+        let (block, input) = Block::parse(input)?;
 
         let (_, input) = parse_token(input, "{%")?;
         let (_, input) = parse_token(input, "endcall")?;

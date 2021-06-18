@@ -4,7 +4,7 @@ use std::fmt::{Display, Write};
 
 use crate::parse::{ident::ident_list, parse_token};
 
-use super::{ast::Ast, expr::Expr, ident::Ident, peek_token_bool, Parse};
+use super::{block::Block, expr::Expr, ident::Ident, peek_token_bool, Parse};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Set<'i> {
@@ -22,7 +22,7 @@ impl<'i> Parse<'i> for Set<'i> {
         if peek_token_bool(input, "%}") {
             let (_, input) = parse_token(input, "%}")?;
 
-            let (ast, input) = Ast::parse(input)?;
+            let (ast, input) = Block::parse(input)?;
 
             let (_, input) = parse_token(input, "{% endset %}")?;
 
@@ -66,7 +66,7 @@ impl Display for Set<'_> {
 #[derive(Debug, Clone, PartialEq)]
 pub enum SetData<'i> {
     Expr(Expr<'i>),
-    Block(Box<Ast<'i>>),
+    Block(Box<Block<'i>>),
 }
 
 impl Display for SetData<'_> {

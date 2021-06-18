@@ -9,7 +9,7 @@
 //! todo: investigate using SIMD for faster parsing
 //! todo: better error messages
 
-mod ast;
+mod block;
 mod call;
 mod r#else;
 mod expr;

@@ -2,19 +2,19 @@ use std::fmt::Display;
 
 use crate::parse::parse_token;
 
-use super::{ast::Ast, peek_token, Parse, ParseError, ParseResult};
+use super::{block::Block, peek_token, Parse, ParseError, ParseResult};
 
 #[derive(Debug, Clone, PartialEq)]
 
 pub struct Else<'i> {
-    block: Ast<'i>,
+    block: Block<'i>,
 }
 
 impl<'i> Parse<'i> for Else<'i> {
     fn parse(input: &'i str) -> ParseResult<Self> {
         let (_token, input) = parse_token(input, "else")?;
 
-        let (block, input) = Ast::parse(input)?;
+        let (block, input) = Block::parse(input)?;
 
         Ok((Self { block }, input))
     }

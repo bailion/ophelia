@@ -2,7 +2,7 @@ use std::fmt::{Display, Write};
 
 use crate::parse::{peek_multiple, peek_token};
 
-use super::{ast::Ast, expr::Expr, ident::Ident, parse_token, Parse, ParseResult};
+use super::{block::Block, expr::Expr, ident::Ident, parse_token, Parse, ParseResult};
 
 #[derive(Clone, PartialEq, Debug)]
 
@@ -10,7 +10,7 @@ pub struct Macro<'i> {
     name: Ident<'i>,
     args: Vec<Ident<'i>>,
     kwargs: Vec<(Ident<'i>, Expr<'i>)>,
-    ast: Box<Ast<'i>>,
+    ast: Box<Block<'i>>,
 }
 
 impl<'i> Parse<'i> for Macro<'i> {
@@ -26,7 +26,7 @@ impl<'i> Parse<'i> for Macro<'i> {
 
         let (_, input) = parse_token(input, "-%}")?;
 
-        let (ast, input) = Ast::parse(input)?;
+        let (ast, input) = Block::parse(input)?;
         let ast = box (ast);
 
         let (_, input) = parse_token(input, "{%-")?;
