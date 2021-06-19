@@ -28,15 +28,15 @@ impl<'i> Parse<'i> for Literal<'i> {
                 return Err(ParseError::UnexpectedEndOfInput);
             }
 
-            if input.starts_with("[") {
+            if input.starts_with('[') {
                 return parse_list(input).map(|(a, b)| (Self::List(a), b));
             }
 
-            if input.starts_with("{") {
+            if input.starts_with('{') {
                 return parse_dict(input).map(|(a, b)| (Self::Dict(a), b));
             }
 
-            if input.starts_with("(") {
+            if input.starts_with('(') {
                 return parse_tuple(input).map(|(a, b)| (Self::Tuple(a), b));
             }
 
@@ -48,7 +48,7 @@ impl<'i> Parse<'i> for Literal<'i> {
                 return Ok((Self::Bool(false), input.get("false".len()..).unwrap()));
             }
 
-            if input.starts_with("\"") || input.starts_with("'") {
+            if input.starts_with('\"') || input.starts_with('\'') {
                 let (string, rest) = up_to(input.get(1..).unwrap(), &["\"", "'"])?;
 
                 return Ok((Self::String(string), rest.get(1..).unwrap_or("")));
@@ -198,9 +198,7 @@ impl<'i> NumberParser<'i> {
     }
 
     fn into_float(self) -> Option<f32> {
-        if self.int_part.is_none() {
-            return None;
-        }
+        self.int_part?;
 
         let stop = if let Some((_, stop)) = self.exponent_part {
             stop

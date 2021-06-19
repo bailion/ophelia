@@ -22,15 +22,15 @@ pub enum Stmt<'i> {
 impl<'i> Parse<'i> for Stmt<'i> {
     fn parse(input: &'i str) -> super::ParseResult<Self> {
         ignore_whitespace(input, |input| {
-            if peek_multiple_bool(input, &[&"{%", "for"]) {
+            if peek_multiple_bool(input, &["{%", "for"]) {
                 let (stmt, leftover) = ForStmt::parse(input)?;
 
                 return Ok((Self::For(Box::new(stmt), None), leftover));
-            } else if peek_multiple_bool(input, &[&"{%", "if"]) {
+            } else if peek_multiple_bool(input, &["{%", "if"]) {
                 let (stmt, leftover) = If::parse(input)?;
 
                 return Ok((Self::If(Box::new(stmt)), leftover));
-            } else if peek_multiple_bool(input, &[&"{%", "macro"]) {
+            } else if peek_multiple_bool(input, &["{%", "macro"]) {
                 let (stmt, leftover) = Macro::parse(input)?;
 
                 return Ok((Self::Macro(stmt), leftover));

@@ -73,7 +73,7 @@ pub(crate) fn parse_multiple<'i>(
     mut input: &'i str,
     selectors: &[&str],
 ) -> ParseResult<'i, Vec<&'i str>> {
-    assert!(selectors.len() > 0);
+    assert!(!selectors.is_empty());
 
     let mut output_segments = vec![];
 
@@ -88,24 +88,20 @@ pub(crate) fn parse_multiple<'i>(
 
 /// Peeks for an **ASCII** token.
 pub(crate) fn peek_token<'i>(input: &'i str, selector: &str) -> ParseResult<'i, bool> {
-    let res = ignore_whitespace(input, |input| {
+    ignore_whitespace(input, |input| {
         Ok((
             {
                 if input.len() < selector.len() {
                     return Err(ParseError::UnexpectedEndOfInput);
+                } else if let Some(cmp) = input.get(0..selector.len()) {
+                    cmp == selector
                 } else {
-                    if let Some(cmp) = input.get(0..selector.len()) {
-                        cmp == selector
-                    } else {
-                        return Err(ParseError::UnexpectedToken(&input[..]));
-                    }
+                    return Err(ParseError::UnexpectedToken(input));
                 }
             },
             input,
         ))
-    });
-
-    res
+    })
 }
 
 pub(crate) fn peek_token_bool<'i>(input: &'i str, selector: &str) -> bool {
@@ -113,7 +109,7 @@ pub(crate) fn peek_token_bool<'i>(input: &'i str, selector: &str) -> bool {
 }
 
 pub(crate) fn peek_multiple<'i>(input: &'i str, selectors: &[&str]) -> ParseResult<'i, bool> {
-    assert!(selectors.len() > 0);
+    assert!(!selectors.is_empty());
 
     let mut cursor = input.get(0..).ok_or(ParseError::UnexpectedEndOfInput)?;
     let mut index = 0;

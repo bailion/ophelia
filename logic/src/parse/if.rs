@@ -110,7 +110,7 @@ impl<'i> IfBranch<'i> {
 
             let input = input.get(0..=1).unwrap();
 
-            let (condition, advanced) = Expr::parse(&input.get(0..=1).unwrap())?;
+            let (condition, advanced) = Expr::parse(input.get(0..=1).unwrap())?;
 
             let (block, advanced) = Block::parse(advanced)?;
 
