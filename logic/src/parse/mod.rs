@@ -17,6 +17,7 @@ mod filter;
 mod r#for;
 mod ident;
 mod r#if;
+mod import;
 mod include;
 mod literal;
 mod r#macro;

@@ -54,7 +54,7 @@ impl<'i> Parse<'i> for Block<'i> {
                     }
                 }
             } else {
-                let (raw_string, rest) = up_to_optional(input.clone(), &["{%", "{{", "{#"])?;
+                let (raw_string, rest) = up_to_optional(input, &["{%", "{{", "{#"])?;
 
                 match raw_string {
                     Some(s) => Ok((Some(Self::RawText(s)), rest)),

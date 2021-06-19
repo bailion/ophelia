@@ -146,7 +146,7 @@ pub(crate) fn peek_multiple_bool<'i>(input: &'i str, selectors: &[&str]) -> bool
 }
 
 pub(crate) fn up_to<'i>(mut input: &'i str, tokens: &[&str]) -> ParseResult<'i, &'i str> {
-    let initial_input = input.clone();
+    let initial_input = input;
     let mut idx = 0;
     assert!(!tokens.is_empty());
 
